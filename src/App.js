@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import "./App.css";
+import SearchContainer from "./components/searchContainer";
+import InputSearchContainer from "./components/inputSearchContainer";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("First Load");
+    async function firstLoad() {
+      const rs = await fetch("http://localhost:5000/employees");
+      const result = await rs.json();
+      dispatch({ type: "UPDATE_EMP_LIST", payload: result });
+    }
+    firstLoad();
+  }, [dispatch]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Demo Search React-Redux</h1>
+      <InputSearchContainer />
+      <SearchContainer />
     </div>
   );
 }
